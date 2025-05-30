@@ -112,7 +112,7 @@ function loadSurahImages(folderName, surahName, contentArea) {
 
     // Try different page numbers
     for (let i = 1; i <= maxPages; i++) {
-        const imagePath = `${folderName}/page-${i}.jpg`; // Assuming JPG format
+        const imagePath = `Data/Surah/${folderName}/page-${i}.jpg`;
         imagesHtml += `
             <img src="${imagePath}" 
                     alt="${surahName} - Page ${i}" 
