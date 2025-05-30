@@ -467,13 +467,23 @@
             }
         }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
 </head>
 <body>
     <!-- Header -->
     <div class="header">
         <div class="time-display" id="timeDisplay"></div>
         <div class="header-title">Quran</div>
-        <div class="info-icon" onclick="showInfo()">ℹ️</div>
+        <div class="header-right">
+            <button class="counter-toggle" id="counterToggle" onclick="toggleCounter()" title="Hide Counter">
+                <span id="toggleIcon">×</span>
+            </button>
+<div class="info-icon" onclick="showInfo()">
+  <i class="bi bi-info-circle"></i>
+</div>
+
+        </div>
     </div>
 
     <!-- Main Container -->
@@ -542,9 +552,12 @@
     </div>
 
     <script>
-        // Global variables
+
+       // Global variables
         let counter = 0;
         let sidebarOpen = true;
+        let counterVisible = true;
+
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
