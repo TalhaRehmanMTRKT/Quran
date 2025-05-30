@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +26,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -59,7 +60,7 @@
         }
 
         .info-icon:hover {
-            background-color: rgba(0,0,0,0.1);
+            background-color: rgba(0, 0, 0, 0.1);
         }
 
         .container {
@@ -74,7 +75,7 @@
             backdrop-filter: blur(10px);
             transition: transform 0.3s ease;
             overflow-y: auto;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar.closed {
@@ -104,7 +105,7 @@
         }
 
         .close-sidebar:hover {
-            background-color: rgba(0,0,0,0.1);
+            background-color: rgba(0, 0, 0, 0.1);
         }
 
         .menu-section {
@@ -157,7 +158,7 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 18px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             z-index: 10;
             transition: all 0.3s ease;
         }
@@ -194,7 +195,7 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             padding: 20px;
-            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
         }
 
@@ -214,7 +215,7 @@
             padding: 20px;
             background: rgba(255, 255, 255, 0.8);
             border-radius: 15px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .counter-buttons {
@@ -275,14 +276,16 @@
             border-color: #667eea;
         }
 
-        .counter-btn.set, .counter-btn.reset {
+        .counter-btn.set,
+        .counter-btn.reset {
             background: #3498db;
             color: white;
             padding: 8px 16px;
             font-size: 14px;
         }
 
-        .counter-btn.set:hover, .counter-btn.reset:hover {
+        .counter-btn.set:hover,
+        .counter-btn.reset:hover {
             background: #2980b9;
             transform: scale(1.05);
         }
@@ -348,7 +351,7 @@
             max-width: 100%;
             height: auto;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             display: none;
         }
 
@@ -385,12 +388,12 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .dua-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         .dua-card img {
@@ -408,7 +411,8 @@
         }
 
         /* Header Toggle Buttons */
-        .counter-toggle, .sidebar-toggle-header {
+        .counter-toggle,
+        .sidebar-toggle-header {
             background: rgba(255, 255, 255, 0.8);
             border: 2px solid #ddd;
             padding: 8px 12px;
@@ -425,24 +429,25 @@
             justify-content: center;
         }
 
-        .counter-toggle:hover, .sidebar-toggle-header:hover {
+        .counter-toggle:hover,
+        .sidebar-toggle-header:hover {
             background: white;
             border-color: #667eea;
             transform: scale(1.05);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
             }
-            
+
             .sidebar {
                 position: absolute;
                 height: 100%;
                 z-index: 100;
             }
-            
+
             .right-sidebar {
                 width: 100%;
                 position: fixed;
@@ -450,14 +455,16 @@
                 height: auto;
                 max-height: 50vh;
             }
-            
+
             .dua-grid {
                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
                 gap: 15px;
             }
         }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 </head>
+
 <body>
     <!-- Header -->
     <div class="header">
@@ -468,7 +475,10 @@
                 <span id="toggleIcon">×</span>
             </button>
             <button class="sidebar-toggle-header" onclick="toggleSidebar()" title="Toggle Menu">☰</button>
-            <div class="info-icon" onclick="showInfo()">ℹ️</div>
+            <div class="info-icon" onclick="showInfo()">
+                <i class="bi bi-info-circle"></i>
+            </div>
+
         </div>
     </div>
 
@@ -480,7 +490,7 @@
                 <div class="sidebar-title">Navigation</div>
                 <div class="close-sidebar" onclick="toggleSidebar()">×</div>
             </div>
-            
+
             <div class="menu-section">
                 <div class="menu-title">Surah</div>
                 <div id="surahList">
@@ -500,7 +510,7 @@
         <!-- Main Content -->
         <div class="main-content">
             <!-- <button class="toggle-sidebar" onclick="toggleSidebar()">☰</button> -->
-            
+
             <div class="content-area" id="contentArea">
                 <div class="welcome-message">
                     <h2>Welcome to Quran Daily Use</h2>
@@ -539,7 +549,7 @@
         let counterVisible = true;
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             updateTimeDisplay();
             setInterval(updateTimeDisplay, 1000);
             updateCounterDisplay();
@@ -548,9 +558,9 @@
         // Time display
         function updateTimeDisplay() {
             const now = new Date();
-            const timeString = now.toLocaleTimeString('en-US', { 
-                hour12: true, 
-                hour: '2-digit', 
+            const timeString = now.toLocaleTimeString('en-US', {
+                hour12: true,
+                hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit'
             });
@@ -569,10 +579,10 @@
             const rightSidebar = document.getElementById('rightSidebar');
             const toggleIcon = document.getElementById('toggleIcon');
             const toggleButton = document.getElementById('counterToggle');
-            
+
             counterVisible = !counterVisible;
             rightSidebar.classList.toggle('hidden', !counterVisible);
-            
+
             // Update button icon and title
             if (counterVisible) {
                 toggleIcon.textContent = '×';
@@ -621,13 +631,13 @@
             document.querySelectorAll('.menu-item').forEach(item => {
                 item.classList.remove('active');
             });
-            
+
             // Add active class to clicked item
             event.target.classList.add('active');
-            
+
             const contentArea = document.getElementById('contentArea');
             const folderName = surahName.toLowerCase().replace(/\s+/g, '-');
-            
+
             // Try to load images from the surah folder
             loadSurahImages(folderName, surahName, contentArea);
         }
@@ -636,15 +646,15 @@
             // Simulate loading images from folder
             // In a real implementation, you would need to have your images accessible
             // and use fetch or similar to check if files exist
-            
+
             const imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
             const maxPages = 20; // Assume maximum 20 pages per surah
             let imagesHtml = `<h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">${surahName}</h2>`;
             let hasImages = false;
-            
+
             // Create a container for images
             imagesHtml += '<div class="images-container">';
-            
+
             // Try different page numbers
             for (let i = 1; i <= maxPages; i++) {
                 const imagePath = `${folderName}/page-${i}.jpg`; // Assuming JPG format
@@ -656,11 +666,11 @@
                          onload="this.style.display='block'; markImageAsLoaded()">
                 `;
             }
-            
+
             imagesHtml += '</div>';
-            
+
             contentArea.innerHTML = imagesHtml;
-            
+
             // Check if any images loaded after a short delay
             setTimeout(() => {
                 const visibleImages = contentArea.querySelectorAll('.page-image[style*="block"]');
@@ -692,16 +702,16 @@
             document.querySelectorAll('.menu-item').forEach(item => {
                 item.classList.remove('active');
             });
-            
+
             // Add active class to Dua'as menu item
             event.target.classList.add('active');
-            
+
             const contentArea = document.getElementById('contentArea');
-            
+
             // Sample dua names - you can modify these based on your actual dua images
             const duaNames = [
                 'Morning Dua',
-                'Evening Dua', 
+                'Evening Dua',
                 'Before Eating',
                 'After Eating',
                 'Before Sleep',
@@ -711,12 +721,12 @@
                 'Rain Dua',
                 'Forgiveness Dua'
             ];
-            
+
             let duasHtml = `
                 <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">Dua'as</h2>
                 <div class="dua-grid">
             `;
-            
+
             duaNames.forEach(duaName => {
                 const imagePath = `dua/${duaName.toLowerCase().replace(/\s+/g, '-')}.jpg`;
                 duasHtml += `
@@ -726,7 +736,7 @@
                     </div>
                 `;
             });
-            
+
             duasHtml += '</div>';
             contentArea.innerHTML = duasHtml;
         }
@@ -734,12 +744,12 @@
         function openDuaModal(imagePath, duaName) {
             const modal = document.getElementById('duaModal');
             const modalContent = document.getElementById('modalContent');
-            
+
             modalContent.innerHTML = `
                 <h3 style="margin-bottom: 20px; color: #2c3e50;">${duaName}</h3>
                 <img src="${imagePath}" alt="${duaName}" style="max-width: 100%; height: auto;">
             `;
-            
+
             modal.classList.add('active');
         }
 
@@ -752,14 +762,14 @@
         }
 
         // Close modal when clicking outside
-        document.getElementById('duaModal').addEventListener('click', function(e) {
+        document.getElementById('duaModal').addEventListener('click', function (e) {
             if (e.target === this) {
                 closeModal();
             }
         });
 
         // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 closeModal();
             }
