@@ -121,13 +121,14 @@
         .menu-section {
             margin: 20px 0;
         }
-
+        
         .menu-title {
-            padding: 15px 20px 10px;
-            font-weight: 600;
-            color: #34495e;
             font-size: 16px;
-            border-bottom: 1px solid rgba(52, 73, 94, 0.1);
+            font-weight: bold;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .menu-item {
@@ -375,7 +376,32 @@
             height: auto;
             border-radius: 5px;
         }
+                /* Counter Toggle Button */
+        .counter-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 12px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
+        .counter-toggle:hover {
+            background: white;
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
         .close-modal {
             position: absolute;
             top: 20px;
@@ -504,6 +530,11 @@
         </div>
     </div>
 
+    <!-- Counter Toggle Button -->
+    <button class="counter-toggle" id="counterToggle" onclick="toggleCounter()" title="Toggle Counter">
+        <span id="toggleIcon">×</span>
+    </button>
+
     <!-- Modal for Dua images -->
     <div class="modal" id="duaModal">
         <div class="close-modal" onclick="closeModal()">×</div>
@@ -539,6 +570,25 @@
             const sidebar = document.getElementById('sidebar');
             sidebarOpen = !sidebarOpen;
             sidebar.classList.toggle('closed', !sidebarOpen);
+        }
+
+        // Counter toggle function
+        function toggleCounter() {
+            const rightSidebar = document.getElementById('rightSidebar');
+            const toggleIcon = document.getElementById('toggleIcon');
+            const toggleButton = document.getElementById('counterToggle');
+            
+            counterVisible = !counterVisible;
+            rightSidebar.classList.toggle('hidden', !counterVisible);
+            
+            // Update button icon and title
+            if (counterVisible) {
+                toggleIcon.textContent = '×';
+                toggleButton.title = 'Hide Counter';
+            } else {
+                toggleIcon.textContent = '+';
+                toggleButton.title = 'Show Counter';
+            }
         }
 
         // Counter functions
