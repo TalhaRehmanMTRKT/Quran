@@ -1,0 +1,2 @@
+# Quran
+For Personal Use
