@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quran - Daily Use</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #2c3e50;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .time-display {
+            font-weight: 500;
+            color: #34495e;
+            font-size: 14px;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .info-icon {
+            cursor: pointer;
+            font-size: 18px;
+            padding: 8px;
+            border-radius: 50%;
+            background: rgba(52, 73, 94, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .info-icon:hover {
+            background: rgba(52, 73, 94, 0.2);
+            transform: scale(1.1);
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            height: calc(100vh - 70px);
+            position: relative;
+        }
+
+        /* Right Sidebar for Counter */
+        .right-sidebar {
+            width: 240px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar.closed {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(52, 73, 94, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .close-sidebar {
+            cursor: pointer;
+            font-size: 20px;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background 0.3s ease;
+        }
+
+        .close-sidebar:hover {
+            background: rgba(52, 73, 94, 0.1);
+        }
+
+        .menu-section {
+            margin: 20px 0;
+        }
+
+        .menu-title {
+            padding: 15px 20px 10px;
+            font-weight: 600;
+            color: #34495e;
+            font-size: 16px;
+            border-bottom: 1px solid rgba(52, 73, 94, 0.1);
+        }
+
+        .menu-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: rgba(52, 73, 94, 0.05);
+            border-left-color: #3498db;
+        }
+
+        .menu-item.active {
+            background: rgba(52, 152, 219, 0.1);
+            border-left-color: #3498db;
+            color: #2980b9;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .toggle-sidebar {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 200;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .toggle-sidebar:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.05);
+        }
+
+        /* Counter */
+        .counter {
+            width: 200px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            position: sticky;
+            top: 20px;
+            margin: 20px;
+        }
+
+        .counter-display {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(52, 73, 94, 0.05);
+            border-radius: 8px;
+        }
+
+        .counter-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .counter-btn {
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .counter-btn.increment {
+            background: #27ae60;
+            color: white;
+        }
+
+        .counter-btn.decrement {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .counter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .counter-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .counter-input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .counter-btn.set {
+            background: #3498db;
+            color: white;
+            padding: 8px;
+        }
+
+        .counter-btn.reset {
+            background: #95a5a6;
+            color: white;
+            padding: 8px;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding: 60px 20px 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 18px;
+            margin-top: 50px;
+        }
+
+        .images-container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .page-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .page-image:hover {
+            transform: scale(1.02);
+        }
+
+        .not-available {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 16px;
+            padding: 50px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            margin: 50px 0;
+        }
+
+        .dua-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .dua-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dua-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .dua-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .dua-card .title {
+            padding: 15px;
+            font-weight: 600;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+            text-align: center;
+        }
+
+        .modal img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: absolute;
+                height: 100%;
+                z-index: 200;
+            }
+            
+            .right-sidebar {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: auto;
+                height: auto;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+                border-radius: 15px;
+                z-index: 300;
+            }
+            
+            .counter {
+                margin: 0;
+                padding: 15px;
+                min-width: 100px;
+            }
+            
+            .counter-display {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+            
+            .header-title {
+                font-size: 20px;
+            }
+            
+            .content-area {
+                padding: 80px 10px 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .counter {
+                padding: 10px;
+                min-width: 80px;
+            }
+            
+            .counter-display {
+                font-size: 20px;
+            }
+            
+            .counter-btn {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="time-display" id="timeDisplay"></div>
+        <div class="header-title">Quran</div>
+        <div class="info-icon" onclick="showInfo()">ℹ️</div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">Navigation</div>
+                <div class="close-sidebar" onclick="toggleSidebar()">×</div>
+            </div>
+            
+            <div class="menu-section">
+                <div class="menu-title">Surahs</div>
+                <div id="surahList">
+                    <div class="menu-item" onclick="loadSurah('Surah Mulk')">Surah Mulk</div>
+                    <div class="menu-item" onclick="loadSurah('Surah Ya-Seen')">Surah Ya-Seen</div>
+                    <div class="menu-item" onclick="loadSurah('Surah Muzammil')">Surah Muzammil</div>
+                    <div class="menu-item" onclick="loadSurah('Surah Wa-qiah')">Surah Wa-qiah</div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">Dua'as</div>
+                <div class="menu-item" onclick="loadDuas()">View All Dua'as</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <button class="toggle-sidebar" onclick="toggleSidebar()">☰</button>
+            
+            <div class="content-area" id="contentArea">
+                <div class="welcome-message">
+                    <h2>Welcome to Quran Daily Use</h2>
+                    <p>Select a Surah from the sidebar to begin reading</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar with Counter -->
+        <div class="right-sidebar">
+            <div class="counter">
+                <div class="counter-display" id="counterDisplay">0</div>
+                <div class="counter-buttons">
+                    <button class="counter-btn increment" onclick="incrementCounter()">+</button>
+                    <button class="counter-btn decrement" onclick="decrementCounter()">-</button>
+                </div>
+                <div class="counter-controls">
+                    <input type="number" class="counter-input" id="setCounterInput" placeholder="Set value" min="0">
+                    <button class="counter-btn set" onclick="setCounter()">Set</button>
+                    <button class="counter-btn reset" onclick="resetCounter()">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Dua images -->
+    <div class="modal" id="duaModal">
+        <div class="close-modal" onclick="closeModal()">×</div>
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <script>
+        // Global variables
+        let counter = 0;
+        let sidebarOpen = true;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTimeDisplay();
+            setInterval(updateTimeDisplay, 1000);
+            updateCounterDisplay();
+        });
+
+        // Time display
+        function updateTimeDisplay() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour12: true, 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('timeDisplay').textContent = timeString;
+        }
+
+        // Sidebar functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebarOpen = !sidebarOpen;
+            sidebar.classList.toggle('closed', !sidebarOpen);
+        }
+
+        // Counter functions
+        function updateCounterDisplay() {
+            document.getElementById('counterDisplay').textContent = counter;
+        }
+
+        function incrementCounter() {
+            counter++;
+            updateCounterDisplay();
+        }
+
+        function decrementCounter() {
+            if (counter > 0) {
+                counter--;
+                updateCounterDisplay();
+            }
+        }
+
+        function resetCounter() {
+            counter = 0;
+            updateCounterDisplay();
+        }
+
+        function setCounter() {
+            const input = document.getElementById('setCounterInput');
+            const value = parseInt(input.value);
+            if (value >= 0 && !isNaN(value)) {
+                counter = value;
+                updateCounterDisplay();
+                input.value = '';
+            }
+        }
+
+        // Surah functions
+        function loadSurah(surahName) {
+            // Remove active class from all menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked item
+            event.target.classList.add('active');
+            
+            const contentArea = document.getElementById('contentArea');
+            const folderName = surahName.toLowerCase().replace(/\s+/g, '-');
+            
+            // Try to load images from the surah folder
+            loadSurahImages(folderName, surahName, contentArea);
+        }
+
+        function loadSurahImages(folderName, surahName, contentArea) {
+            // Simulate loading images from folder
+            // In a real implementation, you would need to have your images accessible
+            // and use fetch or similar to check if files exist
+            
+            const imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+            const maxPages = 20; // Assume maximum 20 pages per surah
+            let imagesHtml = `<h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">${surahName}</h2>`;
+            let hasImages = false;
+            
+            // Create a container for images
+            imagesHtml += '<div class="images-container">';
+            
+            // Try different page numbers
+            for (let i = 1; i <= maxPages; i++) {
+                const imagePath = `${folderName}/page-${i}.jpg`; // Assuming JPG format
+                imagesHtml += `
+                    <img src="${imagePath}" 
+                         alt="${surahName} - Page ${i}" 
+                         class="page-image"
+                         onerror="this.style.display='none'"
+                         onload="this.style.display='block'; markImageAsLoaded()">
+                `;
+            }
+            
+            imagesHtml += '</div>';
+            
+            contentArea.innerHTML = imagesHtml;
+            
+            // Check if any images loaded after a short delay
+            setTimeout(() => {
+                const visibleImages = contentArea.querySelectorAll('.page-image[style*="block"]');
+                if (visibleImages.length === 0) {
+                    contentArea.innerHTML = `
+                        <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">${surahName}</h2>
+                        <div class="not-available">
+                            <h3>Not Available Currently</h3>
+                            <p>Images for ${surahName} are not available at the moment.</p>
+                            <p>Please add images to the folder: <strong>${folderName}/</strong></p>
+                        </div>
+                    `;
+                }
+            }, 2000);
+        }
+
+        function markImageAsLoaded() {
+            // This function is called when an image successfully loads
+            // You can use it to track which images are available
+        }
+
+        function addSurah() {
+            // This function has been removed as per user request
+        }
+
+        // Dua functions
+        function loadDuas() {
+            // Remove active class from all menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to Dua'as menu item
+            event.target.classList.add('active');
+            
+            const contentArea = document.getElementById('contentArea');
+            
+            // Sample dua names - you can modify these based on your actual dua images
+            const duaNames = [
+                'Morning Dua',
+                'Evening Dua', 
+                'Before Eating',
+                'After Eating',
+                'Before Sleep',
+                'Entering Mosque',
+                'Leaving Home',
+                'Travel Dua',
+                'Rain Dua',
+                'Forgiveness Dua'
+            ];
+            
+            let duasHtml = `
+                <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">Dua'as</h2>
+                <div class="dua-grid">
+            `;
+            
+            duaNames.forEach(duaName => {
+                const imagePath = `dua/${duaName.toLowerCase().replace(/\s+/g, '-')}.jpg`;
+                duasHtml += `
+                    <div class="dua-card" onclick="openDuaModal('${imagePath}', '${duaName}')">
+                        <img src="${imagePath}" alt="${duaName}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzZjNzU3ZCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='">
+                        <div class="title">${duaName}</div>
+                    </div>
+                `;
+            });
+            
+            duasHtml += '</div>';
+            contentArea.innerHTML = duasHtml;
+        }
+
+        function openDuaModal(imagePath, duaName) {
+            const modal = document.getElementById('duaModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalContent.innerHTML = `
+                <h3 style="margin-bottom: 20px; color: #2c3e50;">${duaName}</h3>
+                <img src="${imagePath}" alt="${duaName}" style="max-width: 100%; height: auto;">
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('duaModal').classList.remove('active');
+        }
+
+        function showInfo() {
+            alert('Website For Daily Use - Talha Rehman\n\nThis website is designed for daily Quran reading and dhikr counting.');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('duaModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
