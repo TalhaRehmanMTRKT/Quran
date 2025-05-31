@@ -139,7 +139,7 @@ function loadSurahImages(folderName, surahName, contentArea) {
                 </div>
             `;
         }
-    }, 2000);
+    }, 4000);
 }
 
 function markImageAsLoaded() {
