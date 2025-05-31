@@ -1,7 +1,7 @@
 // Global variables
 let counter = 0;
-let sidebarOpen = true;
-let counterVisible = true;
+let sidebarOpen = false;
+let counterVisible = false;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function () {
