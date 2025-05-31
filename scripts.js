@@ -163,18 +163,18 @@ function loadDuas() {
 
     const contentArea = document.getElementById('contentArea');
 
-    // Sample dua names - you can modify these based on your actual dua images
-    const duaNames = [
-        'Morning Dua',
-        'Evening Dua',
-        'Before Eating',
-        'After Eating',
-        'Before Sleep',
-        'Entering Mosque',
-        'Leaving Home',
-        'Travel Dua',
-        'Rain Dua',
-        'Forgiveness Dua'
+    // Map dua names to their numeric image filenames
+    const duaList = [
+        { name: 'Morning Dua', number: 1 },
+        { name: 'Evening Dua', number: 2 },
+        { name: 'Before Eating', number: 3 },
+        { name: 'After Eating', number: 4 },
+        { name: 'Before Sleep', number: 5 },
+        { name: 'Entering Mosque', number: 6 },
+        { name: 'Leaving Home', number: 7 },
+        { name: 'Travel Dua', number: 8 },
+        { name: 'Rain Dua', number: 9 },
+        { name: 'Forgiveness Dua', number: 10 }
     ];
 
     let duasHtml = `
@@ -182,12 +182,12 @@ function loadDuas() {
         <div class="dua-grid">
     `;
 
-    duaNames.forEach(duaName => {
-        const imagePath = `dua/${duaName.toLowerCase().replace(/\s+/g, '-')}.jpg`;
+    duaList.forEach(dua => {
+        const imagePath = `Data/Duaas/${dua.number}.jpg`;
         duasHtml += `
-            <div class="dua-card" onclick="openDuaModal('${imagePath}', '${duaName}')">
-                <img src="${imagePath}" alt="${duaName}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzZjNzU3ZCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='">
-                <div class="title">${duaName}</div>
+            <div class="dua-card" onclick="openDuaModal('${imagePath}', '${dua.name}')">
+                <img src="${imagePath}" alt="${dua.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzZjNzU3ZCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='">
+                <div class="title">${dua.name}</div>
             </div>
         `;
     });
