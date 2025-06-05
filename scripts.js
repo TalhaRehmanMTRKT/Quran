@@ -123,6 +123,8 @@ function loadSurahImages(folderName, surahName, contentArea) {
     }
 
     imagesHtml += '</div>';
+    imagesHtml += '</div><div style="height: 100px;"></div>';  // Add scrollable space at bottom
+
 
     contentArea.innerHTML = imagesHtml;
 
