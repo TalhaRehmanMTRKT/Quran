@@ -167,8 +167,8 @@ function loadDuas() {
 
     // Map dua names to their numeric image filenames
     const duaList = [
-        { name: 'Morning Dua', number: 1 },
-        { name: 'Evening Dua', number: 2 },
+        { name: 'Dua For Parents', number: 1 },
+        { name: 'Forgiveness Dua', number: 2 },
         { name: 'Before Eating', number: 3 },
         { name: 'After Eating', number: 4 },
         { name: 'Before Sleep', number: 5 },
