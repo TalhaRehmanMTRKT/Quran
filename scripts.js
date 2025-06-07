@@ -80,6 +80,7 @@ function setCounter() {
     }
 }
 
+
 // Surah functions
 function loadSurah(surahName) {
     // Remove active class from all menu items
