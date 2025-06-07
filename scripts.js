@@ -169,7 +169,7 @@ function loadDuas() {
     const duaList = [
         { name: 'Dua For Parents', number: 1 },
         { name: 'Forgiveness Dua', number: 2 },
-        { name: 'Before Eating', number: 3 },
+        { name: 'Dua of Istikhara', number: 3 },
         { name: 'After Eating', number: 4 },
         { name: 'Before Sleep', number: 5 },
         { name: 'Entering Mosque', number: 6 },
