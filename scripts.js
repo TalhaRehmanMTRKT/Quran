@@ -173,7 +173,7 @@ function loadDuas() {
         { name: 'Dua of Istikhara', number: 3 },
         { name: 'Darood-Qabristan', number: 4 },
         { name: 'Darood-e-Tunajjina', number: 5 },
-        { name: 'Entering Mosque', number: 6 },
+        { name: 'For Spouse', number: 6 },
         { name: 'Leaving Home', number: 7 },
         { name: 'Travel Dua', number: 8 },
         { name: 'Rain Dua', number: 9 },
