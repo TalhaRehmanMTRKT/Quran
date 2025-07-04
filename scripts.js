@@ -174,7 +174,7 @@ function loadDuas() {
         { name: 'Darood-Qabristan', number: 4 },
         { name: 'Darood-e-Tunajjina', number: 5 },
         { name: 'For Spouse', number: 6 },
-        { name: 'Leaving Home', number: 7 },
+        { name: 'Ayat-e-Kareema', number: 7 },
         { name: 'Travel Dua', number: 8 },
         { name: 'Rain Dua', number: 9 },
         { name: 'Forgiveness Dua', number: 10 }
