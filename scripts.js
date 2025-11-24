@@ -176,7 +176,7 @@ function loadDuas() {
         { name: 'For Spouse', number: 6 },
         { name: 'Ayat-e-Kareema', number: 7 },
         { name: 'Forgiveness Dua', number: 8 },
-        { name: 'Rain Dua', number: 9 },
+        { name: 'Forgiveness Dua', number: 9 },
         { name: 'Forgiveness Dua', number: 10 }
     ];
 
