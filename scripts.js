@@ -78,8 +78,7 @@ function updateDateDisplay() {
         const hijriFormatter = new Intl.DateTimeFormat('en-US-u-ca-islamic-umalqura', {
             day: 'numeric',
             month: 'long',
-            year: 'numeric',
-            weekday: 'long'
+            year: 'numeric'
         });
         hijri = hijriFormatter.format(now);
     } catch (e) {
