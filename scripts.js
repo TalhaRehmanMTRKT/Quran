@@ -1,172 +1,170 @@
-// Global variables
-let counter = 0;
+// ===== State =====
 let sidebarOpen = false;
-let counterVisible = false;
 
-// Initialize
+// ===== Initialization =====
 document.addEventListener('DOMContentLoaded', function () {
+    initTheme();
     updateTimeDisplay();
+    updateDateDisplay();
     setInterval(updateTimeDisplay, 1000);
-    updateCounterDisplay();
+
+    // Update date at midnight
+    setInterval(updateDateDisplay, 60000);
+
+    // Close modal on Escape
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    // Close modal on backdrop click
+    document.getElementById('duaModal').addEventListener('click', function (e) {
+        if (e.target === this) closeModal();
+    });
 });
 
-// Time display
+// ===== Theme =====
+function initTheme() {
+    const saved = localStorage.getItem('quran-theme');
+    const theme = saved || 'light';
+    applyTheme(theme);
+}
+
+function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    localStorage.setItem('quran-theme', next);
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const icon = document.getElementById('themeIcon');
+    if (theme === 'dark') {
+        icon.className = 'bi bi-sun';
+        document.getElementById('themeToggle').title = 'Switch to Light Mode';
+    } else {
+        icon.className = 'bi bi-moon';
+        document.getElementById('themeToggle').title = 'Switch to Dark Mode';
+    }
+}
+
+// ===== Time Display =====
 function updateTimeDisplay() {
     const now = new Date();
-    const timeString = now.toLocaleTimeString('en-US', {
+    const time = now.toLocaleTimeString('en-US', {
         hour12: true,
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit'
     });
-    document.getElementById('timeDisplay').textContent = timeString;
+    document.getElementById('timeDisplay').textContent = time;
 }
 
-// Sidebar functions
+// ===== Date Display (Gregorian + Islamic) =====
+function updateDateDisplay() {
+    const now = new Date();
+
+    // Gregorian date
+    const gregorian = now.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    // Islamic (Hijri) date using Intl API with islamic-umalqura calendar
+    let hijri = '';
+    try {
+        const hijriFormatter = new Intl.DateTimeFormat('en-US-u-ca-islamic-umalqura', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            weekday: 'long'
+        });
+        hijri = hijriFormatter.format(now);
+    } catch (e) {
+        // Fallback if islamic-umalqura not supported
+        try {
+            const hijriFallback = new Intl.DateTimeFormat('en-US-u-ca-islamic', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            hijri = hijriFallback.format(now);
+        } catch (e2) {
+            hijri = '';
+        }
+    }
+
+    const dateEl = document.getElementById('dateDisplay');
+    let display = gregorian;
+    if (hijri) {
+        display += ' | ' + hijri;
+    }
+    dateEl.textContent = display;
+}
+
+// ===== Sidebar =====
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     sidebarOpen = !sidebarOpen;
     sidebar.classList.toggle('closed', !sidebarOpen);
 }
 
-// Counter toggle function
-function toggleCounter() {
-    const rightSidebar = document.getElementById('rightSidebar');
-    const toggleIcon = document.getElementById('toggleIcon');
-    const toggleButton = document.getElementById('counterToggle');
-
-    counterVisible = !counterVisible;
-    rightSidebar.classList.toggle('hidden', !counterVisible);
-
-    // Update button icon and title
-    if (counterVisible) {
-        toggleIcon.textContent = '×';
-        toggleButton.title = 'Hide Counter';
-    } else {
-        toggleIcon.textContent = '+';
-        toggleButton.title = 'Show Counter';
-    }
-}
-
-// Counter functions
-function updateCounterDisplay() {
-    document.getElementById('counterDisplay').textContent = counter;
-}
-
-function incrementCounter() {
-    counter++;
-    updateCounterDisplay();
-}
-
-function decrementCounter() {
-    if (counter > 0) {
-        counter--;
-        updateCounterDisplay();
-    }
-}
-
-function resetCounter() {
-    counter = 0;
-    updateCounterDisplay();
-}
-
-function setCounter() {
-    const input = document.getElementById('setCounterInput');
-    const value = parseInt(input.value);
-    if (value >= 0 && !isNaN(value)) {
-        counter = value;
-        updateCounterDisplay();
-        input.value = '';
-    }
-}
-
-
-// Surah functions
-function loadSurah(surahName) {
-    // Remove active class from all menu items
-    document.querySelectorAll('.menu-item').forEach(item => {
-        item.classList.remove('active');
-    });
-
-    // Add active class to clicked item
-    event.target.classList.add('active');
+// ===== Surah Loading =====
+function loadSurah(surahNumber, clickedItem) {
+    setActiveMenuItem(clickedItem);
 
     const contentArea = document.getElementById('contentArea');
-    const folderName = surahName.toLowerCase().replace(/\s+/g, '-');
+    const surahNames = {
+        '36': 'Surah Ya-Sin',
+        '55': 'Surah Ar-Rahman',
+        '56': "Surah Al-Waqi'ah",
+        '67': 'Surah Al-Mulk',
+        '73': 'Surah Al-Muzzammil'
+    };
+    const surahName = surahNames[surahNumber] || 'Surah ' + surahNumber;
 
-    // Try to load images from the surah folder
-    loadSurahImages(folderName, surahName, contentArea);
-}
+    const maxPages = 20;
+    let html = '<h2 class="content-heading">' + surahName + '</h2>';
+    html += '<div class="images-container">';
 
-function loadSurahImages(folderName, surahName, contentArea) {
-    // Simulate loading images from folder
-    // In a real implementation, you would need to have your images accessible
-    // and use fetch or similar to check if files exist
-
-    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-    const maxPages = 20; // Assume maximum 20 pages per surah
-    let imagesHtml = `<h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">${surahName}</h2>`;
-    let hasImages = false;
-
-    // Create a container for images
-    imagesHtml += '<div class="images-container">';
-
-    // Try different page numbers
     for (let i = 1; i <= maxPages; i++) {
-        const imagePath = `Data/Surah/${folderName}/page-${i}.jpg`;
-        imagesHtml += `
-            <img src="${imagePath}" 
-                    alt="${surahName} - Page ${i}" 
-                    class="page-image"
-                    onerror="this.style.display='none'"
-                    onload="this.style.display='block'; markImageAsLoaded()">
-        `;
+        html += '<img src="Data/Surah/' + surahNumber + '/page-' + i + '.jpg" '
+            + 'alt="' + surahName + ' - Page ' + i + '" '
+            + 'class="page-image" '
+            + 'onerror="this.style.display=\'none\'" '
+            + 'onload="this.style.display=\'block\'">';
     }
 
-    imagesHtml += '</div>';
-    imagesHtml += '</div><div style="height: 100px;"></div>';  // Add scrollable space at bottom
+    html += '</div><div style="height:80px"></div>';
+    contentArea.innerHTML = html;
 
-
-    contentArea.innerHTML = imagesHtml;
-
-    // Check if any images loaded after a short delay
-    setTimeout(() => {
-        const visibleImages = contentArea.querySelectorAll('.page-image[style*="block"]');
-        if (visibleImages.length === 0) {
-            contentArea.innerHTML = `
-                <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">${surahName}</h2>
-                <div class="not-available">
-                    <h3>Not Available Currently</h3>
-                    <p>Images for ${surahName} are not available at the moment.</p>
-                    <p>Please add images to the folder: <strong>${folderName}/</strong></p>
-                </div>
-            `;
+    // Check if any images loaded
+    setTimeout(function () {
+        const visible = contentArea.querySelectorAll('.page-image[style*="block"]');
+        if (visible.length === 0) {
+            contentArea.innerHTML =
+                '<h2 class="content-heading">' + surahName + '</h2>'
+                + '<div class="not-available">'
+                + '<h3>Not Available</h3>'
+                + '<p>Images for ' + surahName + ' are not available at the moment.</p>'
+                + '<p>Add images to: <strong>Data/Surah/' + surahNumber + '/</strong></p>'
+                + '</div>';
         }
     }, 4000);
+
+    // Close sidebar on mobile
+    if (window.innerWidth <= 768) {
+        sidebarOpen = false;
+        document.getElementById('sidebar').classList.add('closed');
+    }
 }
 
-function markImageAsLoaded() {
-    // This function is called when an image successfully loads
-    // You can use it to track which images are available
-}
+// ===== Dua Loading =====
+function loadDuas(clickedItem) {
+    setActiveMenuItem(clickedItem);
 
-function addSurah() {
-    // This function has been removed as per user request
-}
-
-// Dua functions
-function loadDuas() {
-    // Remove active class from all menu items
-    document.querySelectorAll('.menu-item').forEach(item => {
-        item.classList.remove('active');
-    });
-
-    // Add active class to Dua'as menu item
-    event.target.classList.add('active');
-
-    const contentArea = document.getElementById('contentArea');
-
-    // Map dua names to their numeric image filenames
     const duaList = [
         { name: 'Dua For Parents', number: 1 },
         { name: 'Forgiveness Dua', number: 2 },
@@ -180,34 +178,31 @@ function loadDuas() {
         { name: 'Forgiveness Dua', number: 10 }
     ];
 
-    let duasHtml = `
-        <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">Dua'as</h2>
-        <div class="dua-grid">
-    `;
+    let html = '<h2 class="content-heading">Dua\'as</h2><div class="dua-grid">';
 
-    duaList.forEach(dua => {
-        const imagePath = `Data/Duaas/${dua.number}.jpg`;
-        duasHtml += `
-            <div class="dua-card" onclick="openDuaModal('${imagePath}', '${dua.name}')">
-                <img src="${imagePath}" alt="${dua.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzZjNzU3ZCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='">
-                <div class="title">${dua.name}</div>
-            </div>
-        `;
+    duaList.forEach(function (dua) {
+        const path = 'Data/Duaas/' + dua.number + '.jpg';
+        html += '<div class="dua-card" onclick="openDuaModal(\'' + path + '\', \'' + dua.name + '\')">'
+            + '<img src="' + path + '" alt="' + dua.name + '" '
+            + 'onerror="this.src=\'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzZjNzU3ZCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg==\'">'
+            + '<div class="title">' + dua.name + '</div></div>';
     });
 
-    duasHtml += '</div>';
-    contentArea.innerHTML = duasHtml;
+    html += '</div>';
+    document.getElementById('contentArea').innerHTML = html;
+
+    if (window.innerWidth <= 768) {
+        sidebarOpen = false;
+        document.getElementById('sidebar').classList.add('closed');
+    }
 }
 
+// ===== Modal =====
 function openDuaModal(imagePath, duaName) {
     const modal = document.getElementById('duaModal');
-    const modalContent = document.getElementById('modalContent');
-
-    modalContent.innerHTML = `
-        <h3 style="margin-bottom: 20px; color: #2c3e50;">${duaName}</h3>
-        <img src="${imagePath}" alt="${duaName}" style="max-width: 100%; height: auto;">
-    `;
-
+    document.getElementById('modalContent').innerHTML =
+        '<h3>' + duaName + '</h3>'
+        + '<img src="' + imagePath + '" alt="' + duaName + '" style="max-width:100%;height:auto">';
     modal.classList.add('active');
 }
 
@@ -215,20 +210,14 @@ function closeModal() {
     document.getElementById('duaModal').classList.remove('active');
 }
 
-function showInfo() {
-    alert('Website For Daily Use - Talha Rehman\n\nThis website is designed for daily Quran reading and dhikr counting.');
+// ===== Helpers =====
+function setActiveMenuItem(item) {
+    document.querySelectorAll('.menu-item').forEach(function (el) {
+        el.classList.remove('active');
+    });
+    if (item) item.classList.add('active');
 }
 
-// Close modal when clicking outside
-document.getElementById('duaModal').addEventListener('click', function (e) {
-    if (e.target === this) {
-        closeModal();
-    }
-});
-
-// Keyboard shortcuts
-document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-        closeModal();
-    }
-});
+function showInfo() {
+    alert('Quran Daily Recite\nDesigned for daily Quran reading.\nTalha Rehman');
+}
