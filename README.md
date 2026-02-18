@@ -19,6 +19,4 @@ A personal web application for daily Quran reading, including Surah pages and Du
 - Dua card grid with full-screen modal viewer.
 - Responsive layout for desktop and mobile.
 
-## Usage
-
-Open `index.html` in a web browser. No build tools or server required.
+Website link: talharehmanmtrkt.github.io/Quran/
