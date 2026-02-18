@@ -89,19 +89,6 @@ body {
     gap: 8px;
 }
 
-.time-display {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: 0.3px;
-}
-
-.date-display {
-    font-size: 11px;
-    color: var(--text-secondary);
-    line-height: 1.4;
-}
 
 .header-title {
     font-size: 22px;
@@ -407,10 +394,6 @@ body {
         min-width: 0;
     }
 
-    .date-display {
-        font-size: 10px;
-    }
-
     .header-title {
         font-size: 18px;
     }
@@ -455,11 +438,4 @@ body {
         padding: 4px 8px;
     }
 
-    .time-display {
-        font-size: 13px;
-    }
-
-    .date-display {
-        font-size: 9px;
-    }
 }

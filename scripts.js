@@ -4,12 +4,7 @@ let sidebarOpen = false;
 // ===== Initialization =====
 document.addEventListener('DOMContentLoaded', function () {
     initTheme();
-    updateTimeDisplay();
-    updateDateDisplay();
-    setInterval(updateTimeDisplay, 1000);
 
-    // Update date at midnight
-    setInterval(updateDateDisplay, 60000);
 
     // Close modal on Escape
     document.addEventListener('keydown', function (e) {
@@ -48,49 +43,7 @@ function applyTheme(theme) {
     }
 }
 
-// ===== Time Display =====
-function updateTimeDisplay() {
-    const now = new Date();
-    const time = now.toLocaleTimeString('en-US', {
-        hour12: true,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    });
-    document.getElementById('timeDisplay').textContent = time;
-}
 
-// ===== Date Display (Islamic Hijri) =====
-function updateDateDisplay() {
-    const now = new Date();
-
-    // Islamic (Hijri) date using Intl API with islamic-umalqura calendar
-    let hijri = '';
-    try {
-        const hijriFormatter = new Intl.DateTimeFormat('en-US-u-ca-islamic-umalqura', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-        });
-        hijri = hijriFormatter.format(now);
-    } catch (e) {
-        // Fallback if islamic-umalqura not supported
-        try {
-            const hijriFallback = new Intl.DateTimeFormat('en-US-u-ca-islamic', {
-                weekday: 'long',
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            });
-            hijri = hijriFallback.format(now);
-        } catch (e2) {
-            hijri = '';
-        }
-    }
-
-    document.getElementById('dateDisplay').textContent = hijri;
-}
 
 // ===== Sidebar =====
 function toggleSidebar() {
