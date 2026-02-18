@@ -60,22 +60,15 @@ function updateTimeDisplay() {
     document.getElementById('timeDisplay').textContent = time;
 }
 
-// ===== Date Display (Gregorian + Islamic) =====
+// ===== Date Display (Islamic Hijri) =====
 function updateDateDisplay() {
     const now = new Date();
-
-    // Gregorian date
-    const gregorian = now.toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
 
     // Islamic (Hijri) date using Intl API with islamic-umalqura calendar
     let hijri = '';
     try {
         const hijriFormatter = new Intl.DateTimeFormat('en-US-u-ca-islamic-umalqura', {
+            weekday: 'long',
             day: 'numeric',
             month: 'long',
             year: 'numeric'
@@ -85,6 +78,7 @@ function updateDateDisplay() {
         // Fallback if islamic-umalqura not supported
         try {
             const hijriFallback = new Intl.DateTimeFormat('en-US-u-ca-islamic', {
+                weekday: 'long',
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric'
@@ -95,12 +89,7 @@ function updateDateDisplay() {
         }
     }
 
-    const dateEl = document.getElementById('dateDisplay');
-    let display = gregorian;
-    if (hijri) {
-        display += ' | ' + hijri;
-    }
-    dateEl.textContent = display;
+    document.getElementById('dateDisplay').textContent = hijri;
 }
 
 // ===== Sidebar =====
